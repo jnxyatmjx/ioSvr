@@ -23,7 +23,7 @@ private:
 
 private:
   tcp::socket socket_;
-  enum { recv_max_len = 1024 };
+  enum { recv_max_len = 56 };
   char data_[recv_max_len];
   std::string data = "HTTP/1.1 200 OK\r\nConnection: Keep-Alive\r\nKeep-Alive: timeout=365, max=9000\r\nContent-Length: 13\r\n\r\nHello, world!";
 };

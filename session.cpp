@@ -24,18 +24,18 @@
 
   void session::do_read()
   {
-    auto self(shared_from_this());
+    // auto self(shared_from_this());
+    // socket_.async_read_some(asio::buffer(data_, recv_max_len),
+    //     [this,self](const std::error_code &ec, std::size_t length)
+    //     {
+    //       if (!ec)
+    //       {
+    //         do_write(length);
+    //       }else
+    //         printf("read error (%d) %s\n",ec.value(),ec.message().c_str());
+    //     });
     socket_.async_read_some(asio::buffer(data_, recv_max_len),
-        [this,self](const std::error_code &ec, std::size_t length)
-        {
-          if (!ec)
-          {
-            do_write(length);
-          }else
-            printf("read error (%d) %s\n",ec.value(),ec.message().c_str());
-        });
-   //socket_.async_read_some(asio::buffer(data_, recv_max_len),
-    //std::bind(&session::read_hander,shared_from_this(),std::placeholders::_1,std::placeholders::_2));
+      std::bind(&session::read_hander,shared_from_this(),std::placeholders::_1,std::placeholders::_2));
                                     /*this is error*/
   }
 
@@ -43,11 +43,13 @@
   { 
       if(!ec)
       {
-        printf("Le:%td  <> %s\n",length,data_);
+        printf("Le:%td\n%s\n",length,data_);
         do_write(length); 
       }else
       {
         printf("read error (%d) %s \n",ec.value(),ec.message().c_str());
+        asio::error_code ignored_ec;
+        socket_.shutdown(asio::ip::tcp::socket::shutdown_both, ignored_ec);
       }
         
   }
@@ -60,7 +62,7 @@
         {
           if (!ec)
           {
-            //printf("write %td\n",tj_len);
+            printf("write %td\n",tj_len);
             do_read();
           }
         });
