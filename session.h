@@ -17,13 +17,17 @@ public:
   tcp::socket & getSocket();
 
 private:
-  void do_read();
-  void read_hander(const std::error_code &ec, std::size_t length);
-  void do_write(std::size_t length);
+  void doReceive();
+  void receiveHander(const std::error_code &ec, std::size_t length);
+  void doSend(std::size_t length);
+  void sendHander(const std::error_code& ec, std::size_t send_len);
 
 private:
   tcp::socket socket_;
-  enum { recv_max_len = 56 };
+  asio::streambuf recv_buf_;
+  asio::streambuf send_buf_;
+  
+  enum { recv_max_len = 16 };
   char data_[recv_max_len];
   std::string data = "HTTP/1.1 200 OK\r\nConnection: Keep-Alive\r\nKeep-Alive: timeout=365, max=9000\r\nContent-Length: 13\r\n\r\nHello, world!";
 };

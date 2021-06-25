@@ -49,7 +49,7 @@ public:
   ~A(){printf("Destruct A \n");}
 
 /*
-  Reason --> do_read  share count:2
+  Reason --> doReceive  share count:2
 */
   void startA()
   {
@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
   std::string ipsd;
   try
   {
-    if (argc < 2)
+    if (argc < 4)
     {
       std::cerr << "Usage: async_tcp_echo_server 0.0.0.0 8970 1\n";
       port = 8970;
