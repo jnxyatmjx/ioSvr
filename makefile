@@ -8,7 +8,7 @@ GCC  = gcc
 LINK = $(CXX)
 
 #Flag
-INCLS		= -I./ -I/mnt/d/EastMoney/asio-asio-1-18-1/asio/include/
+INCLS		= -I./ -I/home/asio-1.18.2/include/
 CCFLAGS		= -g -Wall -Werror -m64 -Wno-deprecated -std=c++11 
 #for c
 CFLAGS		= -g -Wall -Werror -m64 -Wno-deprecated
@@ -20,7 +20,8 @@ TARGETS		= asio
 
 #Files
 SOURCEALL :=$(shell find ./ -maxdepth 1 -iname "*.c" -o -iname "*.cpp" -o -iname "*.cc" -o -iname "*.h" -o -iname "*.hpp")
-OBJSCPP = $(patsubst %.cpp,%.o,$(filter %.cpp, $(SOURCEALL)))
+EXCLUDE_CPP :=$(shell find ./ -name "blocking_tcp_echo_client.cpp")
+OBJSCPP = $(patsubst %.cpp,%.o,$(filter-out $(EXCLUDE_CPP),$(filter %.cpp, $(SOURCEALL))))
 OBJSC   = $(patsubst %.c,%.o,$(filter %.c, $(SOURCEALL)))
 OBJSCC  = $(patsubst %.cc,%.o,$(filter %.cc, $(SOURCEALL)))
 TARGETSSOURCE = $(OBJSCPP) $(OBJSC) $(OBJSCC)
