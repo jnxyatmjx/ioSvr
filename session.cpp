@@ -52,14 +52,14 @@
   { 
       if(!ec)
       {
-        printf("recevLen:%td-inputLen:%td tid:%td\n", recv_len,recv_buf_.size(),syscall(SYS_gettid));
-		while (recv_buf_.size() >= recv_max_len) //have the complete information
+        printf("recevLen:%td-recv_buf_:%td tid:%td\n", recv_len,recv_buf_.size(),syscall(SYS_gettid));
+		while (recv_buf_.size() > 0)
 		{
-			char buf[1024];
-			int buf_nu = recv_buf_.sgetn(buf, recv_buf_.size());
+			char buf[1024] = {'\0'};
+			int buf_nu = recv_buf_.sgetn(buf, 1024);
 			
 			asio::buffer_copy(send_buf_.prepare(buf_nu), asio::buffer(buf,buf_nu));
-			send_buf_.commit(buf_nu); printf("send_bufLen:%td\n",send_buf_.size());
+			send_buf_.commit(buf_nu); printf("send_bufLen:%td-recv_buf_:%td\n",send_buf_.size(),recv_buf_.size());
 			/*std::ostream ot_(&send_buf_);
 			ot_ << "HTTP/1.1 200 OK\r\nConnection: Keep-Alive\r\nKeep-Alive: timeout=365, max=9000\r\n\r\n" << sv_;*/
 			
