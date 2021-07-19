@@ -22,7 +22,7 @@
     doReceive();
   }
 
-  tcp::socket & session::getSocket()
+  asio::ip::tcp::socket & session::getSocket()
   {
       return socket_;
   }

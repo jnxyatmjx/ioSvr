@@ -8,7 +8,7 @@ server::server(const std::string& address, const std::string& port,
   : io_accept_pool_(1),
     io_context_pool_(io_context_pool_size),
     signals_(io_context_pool_.get_io_context()),
-    acceptor_(io_context_pool_.get_io_context()),
+    acceptor_(io_accept_pool_.get_io_context()),
     new_connec_()
     //request_handler_(doc_root)
 {

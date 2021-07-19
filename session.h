@@ -14,7 +14,7 @@ public:
   explicit session(asio::io_context& io_context);
   ~session(void);
   void start();
-  tcp::socket & getSocket();
+  asio::ip::tcp::socket & getSocket();
 
 private:
   void doReceive();
