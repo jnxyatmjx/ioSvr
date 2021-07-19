@@ -41,7 +41,7 @@ private:
   std::vector<io_context_ptr> io_contexts_;
 
   /// The work-tracking executors that keep the io_contexts running.
-  std::list<asio::any_io_executor> work_;
+  std::list<asio::any_io_executor> works_;
 
   /// The next io_context to use for a connection.
   std::size_t next_io_context_;
