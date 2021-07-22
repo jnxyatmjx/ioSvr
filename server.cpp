@@ -61,6 +61,7 @@ void server::handle_accept(const asio::error_code& e)
 
 void server::handle_stop()
 {
+	acceptor_.close();
   io_accept_pool_.stop();
   io_context_pool_.stop();
 }
