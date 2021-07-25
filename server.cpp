@@ -5,10 +5,10 @@
 
 server::server(const std::string& address, const std::string& port,
     const std::string& doc_root, std::size_t io_context_pool_size)
-  : io_accept_pool_(1),
+  : //io_accept_pool_(1),
     io_context_pool_(io_context_pool_size),
     signals_(io_context_pool_.get_io_context()),
-    acceptor_(io_accept_pool_.get_io_context()),
+    acceptor_(io_context_pool_.get_io_context()),
     new_connec_()
     //request_handler_(doc_root)
 {
@@ -35,8 +35,8 @@ server::server(const std::string& address, const std::string& port,
 
 void server::run()
 {
-  io_accept_pool_.run();
   io_context_pool_.run();
+  //io_accept_pool_.run();
 }
 
 void server::start_accept()
@@ -50,6 +50,9 @@ void server::start_accept()
 
 void server::handle_accept(const asio::error_code& e)
 {
+  // Check whether the server was stopped by a signal before this completion handler had a chance to run.
+  if (!acceptor_.is_open()) return;
+
   if (!e)
   {
     assert(new_connec_.use_count() == 1);
@@ -62,6 +65,6 @@ void server::handle_accept(const asio::error_code& e)
 void server::handle_stop()
 {
 	acceptor_.close();
-  io_accept_pool_.stop();
+  //io_accept_pool_.stop();
   io_context_pool_.stop();
 }

@@ -40,7 +40,7 @@ private:
   void handle_stop();
 
   /// Only for Accept I/O context
-  io_context_pool io_accept_pool_;
+  //io_context_pool io_accept_pool_; //this io_context deprecate NOT USE
 
   /// The pool of io_context objects used to perform asynchronous operations.
   io_context_pool io_context_pool_;

@@ -13,14 +13,20 @@
   session::~session(void)
   {
     printf("Session deleted %p..\n",this);
-	recv_buf_.consume(recv_buf_.size());
-	send_buf_.consume(send_buf_.size());
+	  recv_buf_.consume(recv_buf_.size());
+	  send_buf_.consume(send_buf_.size());
+    stop();
   }
 
   void session::start()
   {
     doReceive();
   }
+
+void session::stop()
+{
+  socket_.close();
+}
 
   asio::ip::tcp::socket & session::getSocket()
   {
@@ -53,21 +59,21 @@
       if(!ec)
       {
         printf("recevLen:%td-recv_buf_:%td tid:%td\n", recv_len,recv_buf_.size(),syscall(SYS_gettid));
-		while (recv_buf_.size() > 0)
-		{
-			char buf[1024] = {'\0'};
-			int buf_nu = recv_buf_.sgetn(buf, 1024);
-			
-			asio::buffer_copy(send_buf_.prepare(buf_nu), asio::buffer(buf,buf_nu));
-			send_buf_.commit(buf_nu); printf("send_bufLen:%td-recv_buf_:%td\n",send_buf_.size(),recv_buf_.size());
-			/*std::ostream ot_(&send_buf_);
-			ot_ << "HTTP/1.1 200 OK\r\nConnection: Keep-Alive\r\nKeep-Alive: timeout=365, max=9000\r\n\r\n" << sv_;*/
-			
-		}
-		if(send_buf_.size() > 0)
-			doSend(send_buf_.size());
+        while (recv_buf_.size() > 0)
+        {
+          char buf[1024] = {'\0'};
+          int buf_nu = recv_buf_.sgetn(buf, 1024);
 
-		doReceive();
+          asio::buffer_copy(send_buf_.prepare(buf_nu), asio::buffer(buf,buf_nu));
+          send_buf_.commit(buf_nu); printf("send_bufLen:%td-recv_buf_:%td\n",send_buf_.size(),recv_buf_.size());
+          /*std::ostream ot_(&send_buf_);
+          ot_ << "HTTP/1.1 200 OK\r\nConnection: Keep-Alive\r\nKeep-Alive: timeout=365, max=9000\r\n\r\n" << sv_;*/
+
+        }
+        if(send_buf_.size() > 0)
+          doSend(send_buf_.size());
+
+        doReceive();
 
       }else
       {
