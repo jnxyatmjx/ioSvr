@@ -8,7 +8,7 @@ GCC  = gcc
 LINK = $(CXX)
 
 #Flag
-INCLS		= -I./ -I/home/asio-1.18.2/include/
+INCLS		= -I./ -I/mnt/d/EastMoney/asio-asio-1-18-1/asio/include/
 CCFLAGS		= -g -Wall -Werror -m64 -Wno-deprecated -std=c++11 
 #for c
 CFLAGS		= -g -Wall -Werror -m64 -Wno-deprecated
